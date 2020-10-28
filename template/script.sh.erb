@@ -26,4 +26,4 @@ echo "TIMING - Starting code-server at: $(date)"
 
 # Launch the VSCode Server
 set -x
-code-server --config="${CONFIG_FILE}" <%= context.extra_jupyter_args %>
+code-server --config="${CONFIG_FILE}" <%= context.extra_vscode_args %>
