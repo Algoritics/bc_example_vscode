@@ -45,7 +45,7 @@ export CONFIG_FILE="${PWD}/config.yml"
 (
 umask 077
 cat > "${CONFIG_FILE}" << EOL
-bind-addr: 127.0.0.1:${port}
+bind-addr: 0.0.0.0:${port}
 auth: password
 password: ${password}
 cert: false
