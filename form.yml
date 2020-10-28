@@ -13,7 +13,7 @@ cluster: ""
 # Define attribute values that aren't meant to be modified by the user within
 # the Dashboard form
 attributes:
-  # Set the corresponding modules that need to be loaded for Jupyter to run
+  # Set the corresponding modules that need to be loaded for VSCode to run
   #
   # @note It is called within the batch job as `module load <modules>` if
   #   defined
@@ -27,9 +27,9 @@ attributes:
   #     modules: "python/3.5 cuda/8.0.44"
   modules: "python"
 
-  # Any extra command line arguments to feed to the `jupyter notebook ...`
-  # command that launches the Jupyter notebook within the batch job
-  extra_jupyter_args: ""
+  # Any extra command line arguments to feed to the `code-server ...`
+  # command that launches the VSCode within the batch job
+  extra_vscode_args: ""
 
 # All of the attributes that make up the Dashboard form (in respective order),
 # and made available to the submit configuration file and the template ERB
@@ -42,7 +42,7 @@ attributes:
 #   Dashboard
 form:
   - modules
-  - extra_jupyter_args
+  - extra_vscode_args
   - bc_account
   - bc_queue
   - bc_num_hours
