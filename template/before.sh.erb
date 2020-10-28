@@ -33,9 +33,9 @@
 port=$(find_port)
 
 # Generate SHA1 encrypted password (requires OpenSSL installed)
-SALT="$(create_passwd 16)"
+#SALT="$(create_passwd 16)"
 password="$(create_passwd 16)"
-PASSWORD_SHA1="$(echo -n "${password}${SALT}" | openssl dgst -sha1 | awk '{print $NF}')"
+#PASSWORD_SHA1="$(echo -n "${password}${SALT}" | openssl dgst -sha1 | awk '{print $NF}')"
 
 # The `$CONFIG_FILE` environment variable is exported as it is used in the main
 # `script.sh.erb` file when launching the VSCode server.
@@ -47,7 +47,7 @@ umask 077
 cat > "${CONFIG_FILE}" << EOL
 bind-addr: 127.0.0.1:${port}
 auth: password
-password: u'sha1:${SALT}:${PASSWORD_SHA1}'
+password: ${password}
 cert: false
 open: false
 user-data-dir: ${HOME}
