@@ -26,4 +26,5 @@ echo "TIMING - Starting code-server at: $(date)"
 
 # Launch the VSCode Server
 set -x
+oauth2-proxy --config="${PROXY_FILE}"
 code-server --config="${CONFIG_FILE}" <%= context.extra_vscode_args %>

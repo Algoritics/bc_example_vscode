@@ -31,6 +31,7 @@
 
 # Find available port to run server on
 port=$(find_port)
+app_port=$(find_port)
 
 # Generate password
 password="$(create_passwd 16)"
@@ -38,15 +39,31 @@ password="$(create_passwd 16)"
 # The `$CONFIG_FILE` environment variable is exported as it is used in the main
 # `script.sh.erb` file when launching the VSCode server.
 export CONFIG_FILE="${PWD}/config.yml"
+export PROXY_FILE="${PWD}/proxy.yml"
 
 # Generate VSCode configuration file with secure file permissions
 (
 umask 077
 cat > "${CONFIG_FILE}" << EOL
-bind-addr: 0.0.0.0:${port}
-auth: password
-password: ${password}
+bind-addr: 0.0.0.0:${app_port}
+auth: none
 cert: false
 user-data-dir: ${HOME}
+EOL
+)
+
+(
+umask 077
+cat > "${PROXY_FILE}" << EOL
+http_address="0.0.0.0:${port}"
+cookie_secret="OQINaROshtE9TcZkNAm-5Zs2Pv3xaWytBmc5W7sPX7w="
+provider="oidc"
+email_domains="localhost"
+oidc_issuer_url="http://localhost:5556"
+client_secret="b5f6461a-ba0c-4c5c-9284-ba9e9aa29843"
+client_id="localhost"
+cookie_secure="false"
+redirect_url="http://localhost:8080/oidc"
+upstreams="http://0.0.0.0:${app_port}"
 EOL
 )
