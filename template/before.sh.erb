@@ -55,15 +55,34 @@ EOL
 (
 umask 077
 cat > "${PROXY_FILE}" << EOL
-http_address="0.0.0.0:${port}"
-cookie_secret="OQINaROshtE9TcZkNAm-5Zs2Pv3xaWytBmc5W7sPX7w="
-provider="oidc"
-email_domains="localhost"
-oidc_issuer_url="http://localhost:5556"
-client_secret="b5f6461a-ba0c-4c5c-9284-ba9e9aa29843"
-client_id="localhost"
-cookie_secure="false"
-redirect_url="http://localhost:8080/oidc"
-upstreams="http://0.0.0.0:${app_port}"
+
+daemon on;
+worker_processes 1;
+pid 		${PWD}/nginx.pid;
+error_log	${PWD}/nginx.err;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+    client_body_temp_path ${PWD}/client_body_temp;
+    proxy_temp_path       ${PWD}/proxy_temp;
+    fastcgi_temp_path     ${PWD}/fastcgi_temp;
+    uwsgi_temp_path       ${PWD}/uwsgi_temp;
+    scgi_temp_path        ${PWD}/scgi_temp;
+    access_log		  ${PWD}/nginx.log;
+    server {
+        listen ${port};
+        server_name _;
+
+        location /node/${HOSTNAME}/${port}/ {
+            proxy_pass http://0.0.0.0:${app_port}/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade \$http_upgrade;
+            proxy_set_header Connection "upgrade";          
+        }
+    }
+}
 EOL
 )

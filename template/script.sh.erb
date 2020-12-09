@@ -24,7 +24,12 @@ module list
 # Benchmark info
 echo "TIMING - Starting code-server at: $(date)"
 
+PATH=/usr/local/openresty/nginx/sbin:$PATH
+export PATH
+
+env
+
 # Launch the VSCode Server
 set -x
-oauth2-proxy --config="${PROXY_FILE}"
+nginx -c "${PROXY_FILE}"
 code-server --config="${CONFIG_FILE}" <%= context.extra_vscode_args %>
